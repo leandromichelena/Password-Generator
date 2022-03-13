@@ -4,53 +4,71 @@ const lowerCharSet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'
 const numberCharSet = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 const specialCharSet = [" ", "!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "]", "^", "_", "`", "{", "|", "}", "~"];
 
+var lowerChar = true;
+var upperChar = true;
+var numberChar = true;
+var specialChar = true;
+
 function promptLowerChar() {
-  var lowerChar = window.confirm("Would you like your password to contain LOWERCASE characters?");
+  lowerChar = window.confirm("Would you like your password to contain LOWERCASE characters?");
   return lowerChar;
 };
 
 function promptUpperChar() {
-  var upperChar = window.confirm("Would you like your password to contain UPPERCASE characters?");
-  if (upperChar) {
-    return true
-  }
-  else {
-    return false
-  };
+  upperChar = window.confirm("Would you like your password to contain UPPERCASE characters?");
+  return upperChar;
 }
 
 function promptNumberChar() {
-  var numberChar = window.confirm("Would you like your password to contain NUMBERS?");
-
+  numberChar = window.confirm("Would you like your password to contain NUMBERS?");
+  return numberChar;
 }
-/**
- * this function prompts the user if they want to include special characters
- * @param {*} num 
- * @returns {boolean} true if user selects ok or false if not 
- */
-var promptSpecialChar = function(num) {
-  var specialChar = window.confirm("Would you like your password to contain SPECIAL characters?");
+
+var promptSpecialChar = function () {
+  specialChar = window.confirm("Would you like your password to contain SPECIAL characters?");
   return specialChar;
 };
 
-var charSelection = function() {
+var validateSelection = function() {
   
   if (lowerChar || upperChar || numberChar || specialChar) {
-    console.log("Ok!")
+    console.log("Character selection is Ok! Proceeding with selected char sets")
     // Continue to the next function
   }
   else {
     window.alert("Please select at least one character type to be included in your password.");
-    return charSelection(); // Restarts charSelection function
+    return passChars(); // Restarts charSelection function
   };
 };
 
 var passChars = function() {
-  // call the prompt functions
-  // validateSelection or repeat
-  // create the passChars array
+  // Prompt user for each of the char sets defined above
+  promptLowerChar();
+  promptUpperChar();
+  promptNumberChar();
+  promptSpecialChar();
+
+  // Test the selection. If none of the char sets is selected, restarts
+  validateSelection();
+
+  // create the passChars array by concatenating the char set arrays 
+  var charSet = [];
+  if (lowerChar) {
+    charSet = charSet.concat(lowerCharSet);
+  }
+  if (upperChar) {
+    charSet = charSet.concat(upperCharSet);
+  }
+  if (numberChar) {
+    charSet = charSet.concat(numberCharSet);
+  }
+  if (specialChar) {
+    charSet = charSet.concat(specialCharSet);
+  }
   // return passChars result
-}
+  console.log(charSet);
+  return charSet;
+};
 
 var passLength = function() {
   var promptLength = window.prompt("How many characters would you like to include in your password? Type a number between 8 and 128 for your password length.");
