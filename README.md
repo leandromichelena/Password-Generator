@@ -9,6 +9,9 @@ The challenge was to write the functions that will validate the selections and g
 ## Website
 https://leandromichelena.github.io/Password-Generator/
 
+## Screen Recording
+![Website usage example](UseExample.gif)
+
 ## Built With
 * HTML
 * CSS
