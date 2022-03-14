@@ -9,6 +9,9 @@ var upperChar = true;
 var numberChar = true;
 var specialChar = true;
 
+var charSet = [];
+var promptLength = 0;
+
 function promptLowerChar() {
   lowerChar = window.confirm("Would you like your password to contain LOWERCASE characters?");
   return lowerChar;
@@ -37,11 +40,13 @@ var validateSelection = function() {
   }
   else {
     window.alert("Please select at least one character type to be included in your password.");
-    return passChars(); // Restarts charSelection function
+    return passChars(); // Restarts char selection function
   };
 };
 
 var passChars = function() {
+  // When starting the function, empties the charSet array
+  charSet = [];
   // Prompt user for each of the char sets defined above
   promptLowerChar();
   promptUpperChar();
@@ -51,8 +56,7 @@ var passChars = function() {
   // Test the selection. If none of the char sets is selected, restarts
   validateSelection();
 
-  // create the passChars array by concatenating the char set arrays 
-  var charSet = [];
+  // create the charSet array by concatenating the selected arrays 
   if (lowerChar) {
     charSet = charSet.concat(lowerCharSet);
   }
@@ -66,23 +70,32 @@ var passChars = function() {
     charSet = charSet.concat(specialCharSet);
   }
   // return passChars result
-  console.log(charSet);
   return charSet;
 };
 
 var passLength = function() {
-  var promptLength = window.prompt("How many characters would you like to include in your password? Type a number between 8 and 128 for your password length.");
+  promptLength = window.prompt("How many characters would you like to include in your password? Type a number between 8 and 128 for your password length.");
   if (promptLength > 128 || promptLength < 8) {
     window.alert("Please type a number between 8 and 128. Try again.");
+    // restarts the function from the top
     return passLength();
   }
   else {
+    // Converts the prompt string input to an integer
+    promptLength = parseInt(promptLength); 
+    console.log("Password will be " + promptLength + " characters long.")
     return promptLength;
   };
 };
 
-function generatePassword(charsPool, numLength) {
-  return 123
+function generatePassword() {
+  // create an empty password string
+  var pass = "";
+  // Loop to add random characters from the charSet to the string. Repeats the loop until it becomes "promptLength" characters long.
+  for (var i=0; i < promptLength; i++) {
+    pass = pass.concat(charSet[Math.floor(Math.random() * charSet.length)]);
+  };
+  return pass;
 };
 
 // Get references to the #generate element
@@ -90,9 +103,9 @@ var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
-  var charsPool = passChars();
-  var numLength = passLength();
-  var password = generatePassword(charsPool, numLength);
+  passChars();
+  passLength();
+  var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
